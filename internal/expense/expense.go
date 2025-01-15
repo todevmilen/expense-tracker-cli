@@ -100,3 +100,20 @@ func DeleteExpense(id int64) error {
 
 	return nil
 }
+
+func Summary() error {
+	var summaryValue float64
+
+	expenses, err := ReadExpensesFromFile()
+	if err != nil {
+		return err
+	}
+
+	for _, expense := range expenses {
+		summaryValue += expense.Amount
+	}
+
+	log.Info(fmt.Sprintf("Total expenses: $%.2f", summaryValue))
+
+	return nil
+}
