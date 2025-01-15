@@ -45,7 +45,7 @@ func AddExpense(description string, amount float64, category string) error {
 	return nil
 }
 
-func ListExpenses() error {
+func ListExpenses(category string) error {
 	expenses, err := ReadExpensesFromFile()
 	if err != nil {
 		return err
@@ -53,6 +53,12 @@ func ListExpenses() error {
 
 	fmt.Printf("%-5s %-12s %-20s %-10s %-10s\n", "ID", "Date", "Description", "Amount", "Category")
 	for _, expense := range expenses {
+		if category != "" {
+			if expense.Category != category {
+				continue
+			}
+		}
+
 		fmt.Printf("%-5d %-12s %-20s %-10.2f %-10s\n",
 			expense.ID,
 			expense.CreatedAt.Format("02.01.2006"),

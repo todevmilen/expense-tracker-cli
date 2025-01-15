@@ -8,7 +8,7 @@ import (
 )
 
 func ListCmd() *cobra.Command {
-	addCmd := &cobra.Command{
+	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List Expenses",
 
@@ -17,13 +17,9 @@ func ListCmd() *cobra.Command {
 		},
 	}
 
-	// addCmd.Flags().StringVarP(&Description, "description", "d", "", "description of the expense")
-	// addCmd.MarkFlagRequired("description")
-	// addCmd.Flags().Float64VarP(&Amount, "amount", "a", 0, "Amount of the expense")
-	// addCmd.MarkFlagRequired("amount")
-	// addCmd.Flags().StringVarP(&Category, "category", "c", "", "Category of the expense")
-	//
-	return addCmd
+	listCmd.Flags().StringVarP(&Category, "category", "c", "", "Category of the expense")
+
+	return listCmd
 }
 
 // func RunAddExpenseCmd(args []string) error {
@@ -35,5 +31,5 @@ func ListCmd() *cobra.Command {
 // }
 
 func RunListExpensesCmd(args []string) error {
-	return expense.ListExpenses()
+	return expense.ListExpenses(Category)
 }
