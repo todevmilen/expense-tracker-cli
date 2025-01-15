@@ -30,12 +30,17 @@ func NewExpense(id int64, description string, amount float64, category string) *
 }
 
 func AddExpense(description string, amount float64, category string) error {
+	var id int64
 	expenses, err := ReadExpensesFromFile()
 	if err != nil {
 		return err
 	}
 
-	id := int64(expenses[len(expenses)-1].ID) + 1
+	if len(expenses) == 0 {
+		id = 1
+	} else {
+		id = int64(expenses[len(expenses)-1].ID) + 1
+	}
 
 	expense := NewExpense(id, description, amount, category)
 
@@ -46,7 +51,7 @@ func AddExpense(description string, amount float64, category string) error {
 		return err
 	}
 
-	log.Success(fmt.Sprintf("Exepnse added successfully (ID: %v)", id))
+	log.Success(fmt.Sprintf("Expense added successfully (ID: %v)", id))
 
 	return nil
 }
