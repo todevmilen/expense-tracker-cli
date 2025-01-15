@@ -35,7 +35,7 @@ func AddExpense(description string, amount float64, category string) error {
 		return err
 	}
 
-	id := int64(len(expenses) + 1)
+	id := int64(expenses[len(expenses)-1].ID) + 1
 
 	expense := NewExpense(id, description, amount, category)
 
@@ -45,6 +45,8 @@ func AddExpense(description string, amount float64, category string) error {
 	if err != nil {
 		return err
 	}
+
+	log.Success(fmt.Sprintf("Exepnse added successfully (ID: %v)", id))
 
 	return nil
 }
