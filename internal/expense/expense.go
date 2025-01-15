@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -39,6 +40,26 @@ func AddExpense(description string, amount float64, category string) error {
 	err = WriteExpensesToFile(expenses)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func ListExpenses() error {
+	expenses, err := ReadExpensesFromFile()
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%-5s %-12s %-20s %-10s %-10s\n", "ID", "Date", "Description", "Amount", "Category")
+	for _, expense := range expenses {
+		fmt.Printf("%-5d %-12s %-20s %-10.2f %-10s\n",
+			expense.ID,
+			expense.CreatedAt.Format("02.01.2006"),
+			expense.Description,
+			expense.Amount,
+			expense.Category,
+		)
 	}
 
 	return nil
