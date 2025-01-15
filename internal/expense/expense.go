@@ -1,8 +1,12 @@
 package expense
 
 import (
+	"errors"
 	"fmt"
+	"slices"
 	"time"
+
+	"github.com/todevmilen/expense-tracker/internal/log"
 )
 
 type Expense struct {
@@ -67,6 +71,30 @@ func ListExpenses(category string) error {
 			expense.Category,
 		)
 	}
+
+	return nil
+}
+
+func DeleteExpense(id int64) error {
+	expenses, err := ReadExpensesFromFile()
+	if err != nil {
+		return err
+	}
+
+	if len(expenses) == 0 {
+		return errors.New("Cannot delete! There are no expenses")
+	}
+
+	updatedExpenses := slices.DeleteFunc(expenses, func(e Expense) bool {
+		return e.ID == id
+	})
+
+	err = WriteExpensesToFile(updatedExpenses)
+	if err != nil {
+		return err
+	}
+
+	log.Success(fmt.Sprintf("Expense with ID: %v was deleted!", id))
 
 	return nil
 }
