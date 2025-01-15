@@ -40,12 +40,16 @@ func Info(message string) {
 	log(message, INFO)
 }
 
-func Error(message string, errValue error) {
+func ErrorWithValue(message string, errValue error) {
 	var errMessage string
 	if errValue != nil {
 		errMessage = fmt.Sprintf("%s: %e", message, errValue)
 		log(errMessage, ERROR)
 	}
+	log(message, ERROR)
+}
+
+func Error(message string) {
 	log(message, ERROR)
 }
 
