@@ -122,3 +122,28 @@ func Summary() error {
 
 	return nil
 }
+
+func UpdateExpense(id int64, amount float64) error {
+	expenses, err := ReadExpensesFromFile()
+	if err != nil {
+		return err
+	}
+	if len(expenses) == 0 {
+		return errors.New("Cannot update! There are no expenses")
+	}
+
+	expenseIndex := slices.IndexFunc(expenses, func(e Expense) bool {
+		return e.ID == id
+	})
+
+	expenses[expenseIndex].Amount = amount
+
+	err = WriteExpensesToFile(expenses)
+	if err != nil {
+		return err
+	}
+
+	log.Success(fmt.Sprintf("Expense with ID: %v was updated with amount of: %.2f", id, amount))
+
+	return nil
+}
